@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="yearSemester">
+
+	<resultMap id="yearSemester" type="wms.domain.YearSemesterVo">
+		<!-- 년도/학기 -->
+		<result property="yearSemesterIdx" 		column="YEAR_SEMESTER_IDX" />	<!-- 년도/학기 IDX -->
+		<result property="year" 				column="YEAR" />				<!-- 년도 -->
+		<result property="semester"	 			column="SEMESTER" />			<!-- 학기 -->
+		<result property="startDateTime"	 	column="START_DATETIME" />		<!-- 시작 일시 -->
+		<result property="endDateTime"		 	column="END_DATETIME" />		<!-- 종료 일시 -->
+		<!-- 등록, 수정, 삭제 -->
+		<result property="useYN" 				column="USE_YN" />				<!-- 사용여부, Y:사용, N:사용안함 -->
+		<result property="deleteYN" 			column="DELETE_YN" />			<!-- 삭제여부, Y:삭제, N:삭제안함 -->
+		<result property="createUserIdx" 		column="CREATE_USER_IDX" />		<!-- 생생한 사용자 IDX -->
+		<result property="updateUserIdx" 		column="UPDATE_USER_IDX" />		<!-- 수정한 사용자 IDX -->
+		<result property="deleteUserIdx" 		column="DELETE_USER_IDX" />		<!-- 삭제한 사용자 IDX -->
+		<result property="createUserName" 		column="CREATE_USER_NAME" />	<!-- 생생한 사용자 이름 -->
+		<result property="updateUserName" 		column="UPDATE_USER_NAME" />	<!-- 수정한 사용자 이름 -->
+		<result property="deleteUserName" 		column="DELETE_USER_NAME" />	<!-- 삭제한 사용자 이름 -->
+		<result property="createDateTime"	 	column="CREATE_DATETIME" />		<!-- 생성한 일시 -->
+		<result property="updateDateTime"	 	column="UPDATE_DATETIME" />		<!-- 수정한 일시 -->
+		<result property="deleteDateTime"	 	column="DELETE_DATETIME" />		<!-- 삭제한 일시 -->
+	</resultMap>
+
+	<!-- 추가 -->
+	<insert id="create">
+		<![CDATA[
+		INSERT INTO TB_YEAR_SEMESTER (
+			YEAR_SEMESTER_IDX
+			, YEAR
+			, SEMESTER
+			, START_DATETIME
+			, END_DATETIME
+			, USE_YN, DELETE_YN, CREATE_USER_IDX, CREATE_DATETIME
+		) VALUES (
+			#{yearSemesterIdx}
+			, #{year}
+			, #{semester}
+			, #{startDateTime}
+			, #{endDateTime}
+			, #{useYN}, #{deleteYN}, #{createUserIdx}, #{createDateTime}
+		)
+		]]>
+	</insert>
+
+	<!-- 보기 -->
+	<select id="read" resultMap="yearSemester">
+		<![CDATA[
+		SELECT
+			T_YEAR_SEMESTER.YEAR_SEMESTER_IDX
+			, T_YEAR_SEMESTER.YEAR
+			, T_YEAR_SEMESTER.SEMESTER
+			, T_YEAR_SEMESTER.START_DATETIME
+			, T_YEAR_SEMESTER.END_DATETIME
+			, T_YEAR_SEMESTER.USE_YN
+			, T_YEAR_SEMESTER.DELETE_YN
+			, T_YEAR_SEMESTER.CREATE_USER_IDX
+			, T_YEAR_SEMESTER.UPDATE_USER_IDX
+			, T_YEAR_SEMESTER.DELETE_USER_IDX
+			, T_YEAR_SEMESTER.UPDATE_DATETIME
+			, T_YEAR_SEMESTER.CREATE_DATETIME
+			, T_YEAR_SEMESTER.DELETE_DATETIME
+			, T_USER_CREATE.USER_NAME AS CREATE_USER_NAME
+			, T_USER_UPDATE.USER_NAME AS UPDATE_USER_NAME
+			, T_USER_DELETE.USER_NAME AS DELETE_USER_NAME
+		FROM TB_YEAR_SEMESTER AS T_YEAR_SEMESTER
+		LEFT JOIN TB_USER AS T_USER_CREATE ON T_USER_CREATE.USER_IDX = T_YEAR_SEMESTER.CREATE_USER_IDX
+		LEFT JOIN TB_USER AS T_USER_UPDATE ON T_USER_UPDATE.USER_IDX = T_YEAR_SEMESTER.UPDATE_USER_IDX
+		LEFT JOIN TB_USER AS T_USER_DELETE ON T_USER_DELETE.USER_IDX = T_YEAR_SEMESTER.DELETE_USER_IDX
+		WHERE T_YEAR_SEMESTER.YEAR_SEMESTER_IDX = #{yearSemesterIdx}
+		LIMIT 1
+		]]>
+	</select>
+
+	<!-- 수정 -->
+	<select id="update">
+		<![CDATA[
+		UPDATE TB_YEAR_SEMESTER SET YEAR_SEMESTER_IDX = #{yearSemesterIdx}
+		]]>
+		<if test="year != null">
+			, YEAR = #{year}
+		</if>
+		<if test="semester != null">
+			, SEMESTER = #{semester}
+		</if>
+		<if test="startDateTime != null">
+			, START_DATETIME = #{startDateTime}
+		</if>
+		<if test="endDateTime != null">
+			, END_DATETIME = #{endDateTime}
+		</if>
+		<if test="useYN != null">
+			, USE_YN = #{useYN}
+		</if>
+		<if test="updateUserIdx != null">
+			, UPDATE_USER_IDX = #{updateUserIdx}, UPDATE_DATETIME = #{updateDateTime}
+		</if>
+		<choose>
+			<when test="deleteYN != null and deleteYN == 'Y'.toString()">
+				, DELETE_YN = #{deleteYN}, DELETE_USER_IDX = #{deleteUserIdx}, DELETE_DATETIME = #{deleteDateTime}
+			</when>
+			<when test="deleteYN != null and deleteYN == 'N'.toString()">
+				, DELETE_YN = #{deleteYN}, DELETE_USER_IDX = "", DELETE_DATETIME = ""
+			</when>
+		</choose>
+		WHERE YEAR_SEMESTER_IDX = #{yearSemesterIdx}
+	</select>
+
+	<!-- 목록 -->
+	<select id="all" resultMap="yearSemester">
+		<![CDATA[
+		SELECT
+			T_YEAR_SEMESTER.YEAR_SEMESTER_IDX
+			, T_YEAR_SEMESTER.YEAR
+			, T_YEAR_SEMESTER.SEMESTER
+			, T_YEAR_SEMESTER.START_DATETIME
+			, T_YEAR_SEMESTER.END_DATETIME
+			, T_YEAR_SEMESTER.USE_YN
+			, T_YEAR_SEMESTER.DELETE_YN
+			, T_YEAR_SEMESTER.CREATE_USER_IDX
+			, T_YEAR_SEMESTER.UPDATE_USER_IDX
+			, T_YEAR_SEMESTER.DELETE_USER_IDX
+			, T_YEAR_SEMESTER.UPDATE_DATETIME
+			, T_YEAR_SEMESTER.CREATE_DATETIME
+			, T_YEAR_SEMESTER.DELETE_DATETIME
+			, T_USER_CREATE.USER_NAME AS CREATE_USER_NAME
+			, T_USER_UPDATE.USER_NAME AS UPDATE_USER_NAME
+			, T_USER_DELETE.USER_NAME AS DELETE_USER_NAME
+		FROM TB_YEAR_SEMESTER AS T_YEAR_SEMESTER
+		LEFT JOIN TB_USER AS T_USER_CREATE ON T_USER_CREATE.USER_IDX = T_YEAR_SEMESTER.CREATE_USER_IDX
+		LEFT JOIN TB_USER AS T_USER_UPDATE ON T_USER_UPDATE.USER_IDX = T_YEAR_SEMESTER.UPDATE_USER_IDX
+		LEFT JOIN TB_USER AS T_USER_DELETE ON T_USER_DELETE.USER_IDX = T_YEAR_SEMESTER.DELETE_USER_IDX
+		WHERE 1=1
+		]]>
+		<if test="useYN != null">
+			AND T_YEAR_SEMESTER.USE_YN = #{useYN}
+		</if>
+		<if test="deleteYN != null">
+			AND T_YEAR_SEMESTER.DELETE_YN = #{deleteYN}
+		</if>
+		ORDER BY T_YEAR_SEMESTER.START_DATETIME DESC
+	</select>
+
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<interceptors>
+		<interceptor>
+			<mapping path="/**" />
+			<exclude-mapping path="/initdb" />
+			<exclude-mapping path="/auth/login" />
+			<exclude-mapping path="/auth/login_ajax" />
+			<exclude-mapping path="/auth/logout" />
+			<exclude-mapping path="/resources/**" />
+			<exclude-mapping path="/robots.txt" />
+			<exclude-mapping path="/api/**" />
+			<beans:bean class="wms.interceptor.LoginInterceptor" />
+		</interceptor>
+		<!--
+		<interceptor>
+			<mapping path="/api/**" />
+			<exclude-mapping path="/api/auth/login" />
+			<beans:bean class="wms.interceptor.AppInterceptor" />
+		</interceptor>
+		-->
+	</interceptors>
+
+</beans:beans>

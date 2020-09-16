@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="lectureStudent">
+
+	<resultMap id="lectureStudent" type="wms.domain.LectureStudentVo">
+		<!-- 수강 학생 -->
+		<result property="classroomStudentIdx" 	column="CLASSROOM_STUDENT_IDX" />		<!-- 수강 학생 IDX -->
+		<result property="studentIdx"			column="STUDENT_IDX" />					<!-- 학생 IDX -->
+		<result property="studentName" 			column="STUDENT_NAME" />				<!-- 학생 이름 -->
+		<result property="studentId" 			column="STUDENT_ID" />					<!-- 학생 ID -->
+		<result property="studentPhone" 		column="STUDENT_PHONE" />				<!-- 학생 전화번호 -->
+		<result property="studentEmail" 		column="STUDENT_EMAIL" />				<!-- 학생 이메일 -->
+		<!-- 교수별 교과목 -->
+		<result property="classroomIdx" 		column="CLASSROOM_IDX" />				<!-- 교수별 교과목 IDX -->
+		<result property="professorIdx"			column="PROFESSOR_IDX" />				<!-- 교수 IDX -->
+		<result property="professorName"		column="PROFESSOR_NAME" />				<!-- 교수 이름 -->
+		<result property="classroom"			column="CLASSROOM" />					<!-- 분반 -->
+		<!-- 대학 -->
+		<result property="collegeIdx" 			column="COLLEGE_IDX" />					<!-- 대학 IDX -->
+		<result property="collegeName" 			column="COLLEGE_NAME" />				<!-- 대학 이름 -->
+		<!-- 학과 -->
+		<result property="departmentIdx" 		column="DEPARTMENT_IDX" />				<!-- 학과 IDX -->
+		<result property="departmentName"	 	column="DEPARTMENT_NAME" />				<!-- 학과 이름 -->
+		<!-- 년도/학기 -->
+		<result property="yearSemesterIdx" 		column="YEAR_SEMESTER_IDX" />			<!-- 년도/학기 IDX -->
+		<result property="year" 				column="YEAR" />						<!-- 년도 -->
+		<result property="semester"	 			column="SEMESTER" />					<!-- 학기 -->
+		<result property="startDateTime"	 	column="START_DATETIME" />				<!-- 시작 일시 -->
+		<result property="endDateTime"		 	column="END_DATETIME" />				<!-- 종료 일시 -->
+		<!-- 교과목 -->
+		<result property="subjectIdx" 			column="SUBJECT_IDX" />					<!-- 교과목 IDX -->
+		<result property="subjectName" 			column="SUBJECT_NAME" />				<!-- 교과목 이름 -->
+		<!-- 등록, 수정, 삭제 -->
+		<result property="useYN" 				column="USE_YN" />						<!-- 사용여부, Y:사용, N:사용안함 -->
+		<result property="deleteYN" 			column="DELETE_YN" />					<!-- 삭제여부, Y:삭제, N:삭제안함 -->
+		<result property="createUserIdx" 		column="CREATE_USER_IDX" />				<!-- 생생한 사용자 IDX -->
+		<result property="updateUserIdx" 		column="UPDATE_USER_IDX" />				<!-- 수정한 사용자 IDX -->
+		<result property="deleteUserIdx" 		column="DELETE_USER_IDX" />				<!-- 삭제한 사용자 IDX -->
+		<result property="createUserName" 		column="CREATE_USER_NAME" />			<!-- 생생한 사용자 이름 -->
+		<result property="updateUserName" 		column="UPDATE_USER_NAME" />			<!-- 수정한 사용자 이름 -->
+		<result property="deleteUserName" 		column="DELETE_USER_NAME" />			<!-- 삭제한 사용자 이름 -->
+		<result property="createDateTime"	 	column="CREATE_DATETIME" />				<!-- 생성한 일시 -->
+		<result property="updateDateTime"	 	column="UPDATE_DATETIME" />				<!-- 수정한 일시 -->
+		<result property="deleteDateTime"	 	column="DELETE_DATETIME" />				<!-- 삭제한 일시 -->
+	</resultMap>
+
+	<!-- 추가 -->
+	<insert id="create">
+		<![CDATA[
+		INSERT INTO TB_LECTURESTUDENT (
+			CLASSROOM_STUDENT_IDX
+			, CLASSROOM_IDX
+			, STUDENT_IDX
+			, USE_YN, DELETE_YN, CREATE_USER_IDX, CREATE_DATETIME
+		) VALUES (
+			#{classroomStudentIdx}
+			, #{classroomIdx}
+			, #{studentIdx}
+			, #{useYN}, #{deleteYN}, #{createUserIdx}, #{createDateTime}
+		)
+		]]>
+	</insert>
+
+	<!-- 보기 -->
+	<select id="read" resultMap="lectureStudent">
+		<![CDATA[
+		SELECT
+			T_LECTURESTUDENT.CLASSROOM_STUDENT_IDX
+			, T_LECTURESTUDENT.CLASSROOM_IDX
+			, T_LECTURESTUDENT.STUDENT_IDX
+			, T_LECTURESTUDENT.USE_YN
+			, T_LECTURESTUDENT.DELETE_YN
+			, T_LECTURESTUDENT.CREATE_USER_IDX
+			, T_LECTURESTUDENT.UPDATE_USER_IDX
+			, T_LECTURESTUDENT.DELETE_USER_IDX
+			, T_LECTURESTUDENT.UPDATE_DATETIME
+			, T_LECTURESTUDENT.CREATE_DATETIME
+			, T_LECTURESTUDENT.DELETE_DATETIME
+			, T_USER_CREATE.USER_NAME AS CREATE_USER_NAME
+			, T_USER_UPDATE.USER_NAME AS UPDATE_USER_NAME
+			, T_USER_DELETE.USER_NAME AS DELETE_USER_NAME
+			, T_DEPARTMENT.DEPARTMENT_NAME
+			, T_STUDENT.USER_NAME AS STUDENT_NAME
+			, T_STUDENT.USER_ID AS STUDENT_ID
+			, T_STUDENT.USER_PHONE AS STUDENT_PHONE
+			, T_STUDENT.EMAIL AS STUDENT_EMAIL
+		FROM TB_LECTURESTUDENT AS T_LECTURESTUDENT
+		LEFT JOIN TB_CLASSROOM AS T_CLASSROOM ON T_CLASSROOM.CLASSROOM_IDX = T_LECTURESTUDENT.CLASSROOM_IDX
+		LEFT JOIN TB_DEPARTMENT AS T_DEPARTMENT ON T_DEPARTMENT.DEPARTMENT_IDX = T_CLASSROOM.DEPARTMENT_IDX
+		LEFT JOIN TB_USER AS T_STUDENT ON T_STUDENT.USER_IDX = T_LECTURESTUDENT.STUDENT_IDX
+		LEFT JOIN TB_USER AS T_USER_CREATE ON T_USER_CREATE.USER_IDX = T_LECTURESTUDENT.CREATE_USER_IDX
+		LEFT JOIN TB_USER AS T_USER_UPDATE ON T_USER_UPDATE.USER_IDX = T_LECTURESTUDENT.UPDATE_USER_IDX
+		LEFT JOIN TB_USER AS T_USER_DELETE ON T_USER_DELETE.USER_IDX = T_LECTURESTUDENT.DELETE_USER_IDX
+		WHERE T_LECTURESTUDENT.CLASSROOM_STUDENT_IDX = #{classroomStudentIdx}
+		LIMIT 1
+		]]>
+	</select>
+
+	<!-- 수정 -->
+	<select id="update">
+		<![CDATA[
+		UPDATE TB_LECTURESTUDENT SET CLASSROOM_STUDENT_IDX = #{classroomStudentIdx}
+		]]>
+		<if test=" classroomIdx != null">
+			, CLASSROOM_IDX = #{classroomIdx}
+		</if>
+		<if test=" studentIdx != null">
+			, STUDENT_IDX = #{studentIdx}
+		</if>
+		<if test="useYN != null">
+			, USE_YN = #{useYN}
+		</if>
+		<if test="updateUserIdx != null">
+			, UPDATE_USER_IDX = #{updateUserIdx}, UPDATE_DATETIME = #{updateDateTime}
+		</if>
+		<choose>
+			<when test="deleteYN != null and deleteYN == 'Y'.toString()">
+				, DELETE_YN = #{deleteYN}, DELETE_USER_IDX = #{deleteUserIdx}, DELETE_DATETIME = #{deleteDateTime}
+			</when>
+			<when test="deleteYN != null and deleteYN == 'N'.toString()">
+				, DELETE_YN = #{deleteYN}, DELETE_USER_IDX = "", DELETE_DATETIME = ""
+			</when>
+		</choose>
+		WHERE CLASSROOM_STUDENT_IDX = #{classroomStudentIdx}
+	</select>
+
+	<!-- 목록 -->
+	<select id="all" resultMap="lectureStudent">
+		<![CDATA[
+		SELECT
+			T_LECTURESTUDENT.CLASSROOM_STUDENT_IDX
+			, T_LECTURESTUDENT.CLASSROOM_IDX
+			, T_LECTURESTUDENT.STUDENT_IDX
+			, T_LECTURESTUDENT.USE_YN
+			, T_LECTURESTUDENT.DELETE_YN
+			, T_LECTURESTUDENT.CREATE_USER_IDX
+			, T_LECTURESTUDENT.UPDATE_USER_IDX
+			, T_LECTURESTUDENT.DELETE_USER_IDX
+			, T_LECTURESTUDENT.UPDATE_DATETIME
+			, T_LECTURESTUDENT.CREATE_DATETIME
+			, T_LECTURESTUDENT.DELETE_DATETIME
+			, T_USER_CREATE.USER_NAME AS CREATE_USER_NAME
+			, T_USER_UPDATE.USER_NAME AS UPDATE_USER_NAME
+			, T_USER_DELETE.USER_NAME AS DELETE_USER_NAME
+			, T_DEPARTMENT.DEPARTMENT_NAME
+			, T_STUDENT.USER_NAME AS STUDENT_NAME
+			, T_STUDENT.USER_ID AS STUDENT_ID
+			, T_STUDENT.USER_PHONE AS STUDENT_PHONE
+			, T_STUDENT.EMAIL AS STUDENT_EMAIL
+		FROM TB_LECTURESTUDENT AS T_LECTURESTUDENT
+		LEFT JOIN TB_CLASSROOM AS T_CLASSROOM ON T_CLASSROOM.CLASSROOM_IDX = T_LECTURESTUDENT.CLASSROOM_IDX
+		LEFT JOIN TB_DEPARTMENT AS T_DEPARTMENT ON T_DEPARTMENT.DEPARTMENT_IDX = T_CLASSROOM.DEPARTMENT_IDX
+		LEFT JOIN TB_USER AS T_STUDENT ON T_STUDENT.USER_IDX = T_LECTURESTUDENT.STUDENT_IDX
+		LEFT JOIN TB_USER AS T_USER_CREATE ON T_USER_CREATE.USER_IDX = T_LECTURESTUDENT.CREATE_USER_IDX
+		LEFT JOIN TB_USER AS T_USER_UPDATE ON T_USER_UPDATE.USER_IDX = T_LECTURESTUDENT.UPDATE_USER_IDX
+		LEFT JOIN TB_USER AS T_USER_DELETE ON T_USER_DELETE.USER_IDX = T_LECTURESTUDENT.DELETE_USER_IDX
+		WHERE 1=1
+		]]>
+		<if test="classroomIdx != null">
+			AND T_LECTURESTUDENT.CLASSROOM_IDX = #{classroomIdx}
+		</if>
+		<if test="useYN != null">
+			AND T_LECTURESTUDENT.USE_YN = #{useYN}
+		</if>
+		<if test="deleteYN != null">
+			AND T_LECTURESTUDENT.DELETE_YN = #{deleteYN}
+		</if>
+		ORDER BY T_LECTURESTUDENT.CLASSROOM_STUDENT_IDX DESC
+	</select>
+
+</mapper>
