@@ -70,23 +70,15 @@ public class AuthController {
 
 			// 로그인 성공
 			else {
-				HttpSession session = request.getSession(true);
-
-				// 클라이언트 IP, 로그인 시간 업데이트
-				String ip = Etc.getClientIP(request);
-				UserVo loginUserVo = new UserVo();
-				loginUserVo.setLoginIp(ip);
-				loginUserVo.setUserIdx(existUserVo.getUserIdx());
-				loginUserVo = userService.update(loginUserVo);
-
 				// 사용자 정보
-				session.setAttribute("userName", loginUserVo.getUserName());
-				session.setAttribute("grade", loginUserVo.getGrade());
-				session.setAttribute("userId", loginUserVo.getUserId());
-				session.setAttribute("userIdx", loginUserVo.getUserIdx());
+				HttpSession session = request.getSession(true);
+				session.setAttribute("userName", existUserVo.getUserName());
+				session.setAttribute("grade", existUserVo.getGrade());
+				session.setAttribute("userId", existUserVo.getUserId());
+				session.setAttribute("userIdx", existUserVo.getUserIdx());
 
 				// 로그인 후 이동하는 페이지
-				mav.setViewName("redirect:/college");
+				mav.setViewName("redirect:/user");
 			}
 		}
 

@@ -21,4 +21,7 @@ public class CommonVo {
 	private String createUserName;		// 등록한 사용자 이름
 	private String updateUserName;		// 수정한 사용자 이름
 	private String deleteUserName;		// 삭제한 사용자 이름
+	
+	// 부서
+	private String departmentName;	// 부서이름
 }

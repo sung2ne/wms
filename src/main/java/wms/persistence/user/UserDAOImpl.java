@@ -59,15 +59,9 @@ public class UserDAOImpl implements UserDAO {
 		// 삭제
 		if (vo.getDeleteYN() != null && vo.getDeleteYN().equals("Y")) {
 			// 삭제 일시, 삭제한 사용자 ID
-			vo.setUseYN("N");
 			vo.setDeleteDateTime(DateTimeUtil.saveDateTime());
 			HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 			vo.setDeleteUserIdx(request.getSession().getAttribute("userIdx").toString());
-		}
-		// 로그인 IP, 로그인 일시
-		else if (vo.getLoginIp() != null) {
-			// 삭제 일시, 삭제한 사용자 ID
-			vo.setLoginDateTime(DateTimeUtil.saveDateTime());
 		}
 		// 수정
 		else {

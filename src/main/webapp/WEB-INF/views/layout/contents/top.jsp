@@ -203,47 +203,39 @@
     <aside class="main-sidebar">
         <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
-
+			<ul class="sidebar-menu" data-widget="tree">
+                <li class="header">발주관리</li>
+                <li>
+                    <a href="<c:url value="/purchase"/>">
+                        <i class="fa fa-circle-o"></i> <span>발주</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="<c:url value="/input"/>">
+                        <i class="fa fa-circle-o"></i> <span>입고</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="<c:url value="/output"/>">
+                        <i class="fa fa-circle-o"></i> <span>출고</span>
+                    </a>
+                </li>
+            </ul>
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">기준정보</li>
                 <li>
-                    <a href="<c:url value="/college"/>">
-                        <i class="fa fa-circle-o"></i> <span>대학/학부</span>
+                    <a href="<c:url value="/material"/>">
+                        <i class="fa fa-circle-o"></i> <span>자재</span>
                     </a>
                 </li>
                 <li>
-                    <a href="<c:url value="/department"/>">
-                        <i class="fa fa-circle-o"></i> <span>학과/부서</span>
+                    <a href="<c:url value="/goods"/>">
+                        <i class="fa fa-circle-o"></i> <span>품목</span>
                     </a>
                 </li>
                 <li>
-                    <a href="<c:url value="/yearSemester"/>">
-                        <i class="fa fa-circle-o"></i> <span>연도/학기</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="<c:url value="/scheduletime"/>">
-                        <i class="fa fa-circle-o"></i> <span>시간</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="<c:url value="/subject"/>">
-                        <i class="fa fa-circle-o"></i> <span>교과목</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="<c:url value="/classroom"/>">
-                        <i class="fa fa-circle-o"></i> <span>교수별 교과목</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="<c:url value="/schedule"/>">
-                        <i class="fa fa-circle-o"></i> <span>수업 스케줄</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="<c:url value="/bleRequest"/>">
-                        <i class="fa fa-circle-o"></i> <span>BLE출결</span>
+                    <a href="<c:url value="/customer"/>">
+                        <i class="fa fa-circle-o"></i> <span>거래처</span>
                     </a>
                 </li>
             </ul>
@@ -254,8 +246,17 @@
                         <i class="fa fa-circle-o"></i> <span>사용자</span>
                     </a>
                 </li>
+                <li>
+                    <a href="<c:url value="/department"/>">
+                        <i class="fa fa-circle-o"></i> <span>부서</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="<c:url value="/work"/>">
+                        <i class="fa fa-circle-o"></i> <span>업무</span>
+                    </a>
+                </li>
             </ul>
-
         </section>
         <!-- /.sidebar -->
     </aside>

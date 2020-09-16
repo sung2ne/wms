@@ -9,20 +9,14 @@
 		<result property="userId"				column="USER_ID" />				<!-- 사용자 ID -->
 		<result property="password" 			column="PASSWORD" />			<!-- 사용자 비밀번호 -->
 		<result property="userName" 			column="USER_NAME" />			<!-- 사용자 이름 -->
-		<result property="userPhone" 			column="USER_PHONE" />			<!-- 사용자 전화번호 -->
+		<result property="phone"	 			column="PHONE" />				<!-- 사용자 전화번호 -->
+		<result property="mobile"	 			column="MOBILE" />				<!-- 사용자 핸드폰번호 -->
 		<result property="email" 				column="EMAIL" />				<!-- 사용자 이메일 -->
-		<result property="grade"	 			column="GRADE" />				<!-- 사용자 권한, A:관리자, P:교수, S:학생, H:조교 -->
-		<result property="fcmToken"	 			column="FCM_TOKEN" />			<!-- FCM 토큰 -->
-		<result property="loginIp"	 			column="LOGIN_IP" />			<!-- 로그인 IP -->
-		<result property="loginDateTime"		column="LOGIN_DATETIME" />		<!-- 로그인 일시 -->
-		<!-- 대학 -->
-		<result property="collegeIdx" 			column="COLLEGE_IDX" />			<!-- 대학 IDX -->
-		<result property="collegeName" 			column="COLLEGE_NAME" />		<!-- 대학 이름 -->
-		<!-- 학과 -->
-		<result property="departmentIdx" 		column="DEPARTMENT_IDX" />		<!-- 학과 IDX -->
-		<result property="departmentName"	 	column="DEPARTMENT_NAME" />		<!-- 학과 이름 -->
+		<result property="grade"	 			column="GRADE" />				<!-- 사용자 권한, A:시스템관리자, CA:업체관리자, CU:업체사용자 -->
+		<!-- 부서 -->
+		<result property="departmentIdx" 		column="DEPARTMENT_IDX" />		<!-- 부서 IDX -->
+		<result property="departmentName"	 	column="DEPARTMENT_NAME" />		<!-- 부서 이름 -->
 		<!-- 등록, 수정, 삭제 -->
-		<result property="useYN" 				column="USE_YN" />				<!-- 사용여부, Y:사용, N:사용안함 -->
 		<result property="deleteYN" 			column="DELETE_YN" />			<!-- 삭제여부, Y:삭제, N:삭제안함 -->
 		<result property="createUserIdx" 		column="CREATE_USER_IDX" />		<!-- 생생한 사용자 IDX -->
 		<result property="updateUserIdx" 		column="UPDATE_USER_IDX" />		<!-- 수정한 사용자 IDX -->
@@ -30,9 +24,9 @@
 		<result property="createUserName" 		column="CREATE_USER_NAME" />	<!-- 생생한 사용자 이름 -->
 		<result property="updateUserName" 		column="UPDATE_USER_NAME" />	<!-- 수정한 사용자 이름 -->
 		<result property="deleteUserName" 		column="DELETE_USER_NAME" />	<!-- 삭제한 사용자 이름 -->
-		<result property="createDateTime"	 	column="CREATE_DATETIME" />		<!-- 생성한 일시 -->
-		<result property="updateDateTime"	 	column="UPDATE_DATETIME" />		<!-- 수정한 일시 -->
-		<result property="deleteDateTime"	 	column="DELETE_DATETIME" />		<!-- 삭제한 일시 -->
+		<result property="createDateTime"	 	column="CREATE_DATE_TIME" />		<!-- 생성한 일시 -->
+		<result property="updateDateTime"	 	column="UPDATE_DATE_TIME" />		<!-- 수정한 일시 -->
+		<result property="deleteDateTime"	 	column="DELETE_DATE_TIME" />		<!-- 삭제한 일시 -->
 	</resultMap>
 
 	<!-- 추가 -->
@@ -40,26 +34,26 @@
 		<![CDATA[
 		INSERT INTO TB_USER (
 			USER_IDX
-			, COLLEGE_IDX
 			, DEPARTMENT_IDX
 			, USER_ID
 			, PASSWORD
 			, USER_NAME
-			, USER_PHONE
+			, PHONE
+			, MOBILE
 			, EMAIL
 			, GRADE
-			, USE_YN, DELETE_YN, CREATE_USER_IDX, CREATE_DATETIME
+			, DELETE_YN, CREATE_USER_IDX, CREATE_DATE_TIME
 		) VALUES (
 			#{userIdx}
-			, #{collegeIdx}
 			, #{departmentIdx}
 			, #{userId}
 			, #{password}
 			, #{userName}
-			, #{userPhone}
+			, #{phone}
+			, #{mobile}
 			, #{email}
 			, #{grade}
-			, #{useYN}, #{deleteYN}, #{createUserIdx}, #{createDateTime}
+			, #{deleteYN}, #{createUserIdx}, #{createDateTime}
 		)
 		]]>
 	</insert>
@@ -69,32 +63,26 @@
 		<![CDATA[
 		SELECT
 		 	T_USER.USER_IDX
+		 	, T_USER.DEPARTMENT_IDX
 		 	, T_USER.USER_ID
 			, T_USER.USER_NAME
 			, T_USER.PASSWORD
-			, T_USER.USER_PHONE
+			, T_USER.PHONE
+			, T_USER.MOBILE
 			, T_USER.EMAIL
 			, T_USER.GRADE
-			, T_USER.FCM_TOKEN
-			, T_USER.COLLEGE_IDX
-			, T_USER.DEPARTMENT_IDX
-			, T_USER.LOGIN_IP
-			, T_USER.LOGIN_DATETIME
-			, T_USER.USE_YN
 			, T_USER.DELETE_YN
 			, T_USER.CREATE_USER_IDX
 			, T_USER.UPDATE_USER_IDX
 			, T_USER.DELETE_USER_IDX
-			, T_USER.UPDATE_DATETIME
-			, T_USER.CREATE_DATETIME
-			, T_USER.DELETE_DATETIME
+			, T_USER.UPDATE_DATE_TIME
+			, T_USER.CREATE_DATE_TIME
+			, T_USER.DELETE_DATE_TIME
 			, T_USER_CREATE.USER_NAME AS CREATE_USER_NAME
 			, T_USER_UPDATE.USER_NAME AS UPDATE_USER_NAME
 			, T_USER_DELETE.USER_NAME AS DELETE_USER_NAME
-			, T_COLLEGE.COLLEGE_NAME
 			, T_DEPARTMENT.DEPARTMENT_NAME
 		FROM TB_USER AS T_USER
-		LEFT JOIN TB_COLLEGE AS T_COLLEGE ON T_COLLEGE.COLLEGE_IDX = T_USER.COLLEGE_IDX
 		LEFT JOIN TB_DEPARTMENT AS T_DEPARTMENT ON T_DEPARTMENT.DEPARTMENT_IDX = T_USER.DEPARTMENT_IDX
 		LEFT JOIN TB_USER AS T_USER_CREATE ON T_USER_CREATE.USER_IDX = T_USER.CREATE_USER_IDX
 		LEFT JOIN TB_USER AS T_USER_UPDATE ON T_USER_UPDATE.USER_IDX = T_USER.UPDATE_USER_IDX
@@ -115,9 +103,6 @@
 		<![CDATA[
 		UPDATE TB_USER SET USER_IDX = #{userIdx}
 		]]>
-		<if test="collegeIdx != null">
-			, COLLEGE_IDX = #{collegeIdx}
-		</if>
 		<if test="departmentIdx != null">
 			, DEPARTMENT_IDX = #{departmentIdx}
 		</if>
@@ -130,8 +115,11 @@
 		<if test="userName != null">
 			, USER_NAME = #{userName}
 		</if>
-		<if test="userPhone != null">
-			, USER_PHONE = #{userPhone}
+		<if test="phone != null">
+			, PHONE = #{phone}
+		</if>
+		<if test="mobile != null">
+			, MOBILE = #{mobile}
 		</if>
 		<if test="email != null">
 			, EMAIL = #{email}
@@ -139,24 +127,15 @@
 		<if test="grade != null">
 			, GRADE = #{grade}
 		</if>
-		<if test="fcmToken != null">
-			, FCM_TOKEN = #{fcmToken}
-		</if>
-		<if test="loginIp != null">
-			, LOGIN_IP = #{loginIp}, LOGIN_DATETIME = #{loginDateTime}
-		</if>
-		<if test="useYN != null">
-			, USE_YN = #{useYN}
-		</if>
 		<if test="updateUserIdx != null">
-			, UPDATE_USER_IDX = #{updateUserIdx}, UPDATE_DATETIME = #{updateDateTime}
+			, UPDATE_USER_IDX = #{updateUserIdx}, UPDATE_DATE_TIME = #{updateDateTime}
 		</if>
 		<choose>
 			<when test="deleteYN != null and deleteYN == 'Y'.toString()">
-				, DELETE_YN = #{deleteYN}, DELETE_USER_IDX = #{deleteUserIdx}, DELETE_DATETIME = #{deleteDateTime}
+				, DELETE_YN = #{deleteYN}, DELETE_USER_IDX = #{deleteUserIdx}, DELETE_DATE_TIME = #{deleteDateTime}
 			</when>
 			<when test="deleteYN != null and deleteYN == 'N'.toString()">
-				, DELETE_YN = #{deleteYN}, DELETE_USER_IDX = "", DELETE_DATETIME = ""
+				, DELETE_YN = #{deleteYN}, DELETE_USER_IDX = "", DELETE_DATE_TIME = ""
 			</when>
 		</choose>
 		WHERE USER_IDX = #{userIdx}
@@ -167,46 +146,34 @@
 		<![CDATA[
 		SELECT
 		 	T_USER.USER_IDX
+		 	, T_USER.DEPARTMENT_IDX
 		 	, T_USER.USER_ID
 			, T_USER.USER_NAME
 			, T_USER.PASSWORD
-			, T_USER.USER_PHONE
+			, T_USER.PHONE
+			, T_USER.MOBILE
 			, T_USER.EMAIL
 			, T_USER.GRADE
-			, T_USER.FCM_TOKEN
-			, T_USER.COLLEGE_IDX
-			, T_USER.DEPARTMENT_IDX
-			, T_USER.LOGIN_IP
-			, T_USER.LOGIN_DATETIME
-			, T_USER.USE_YN
 			, T_USER.DELETE_YN
 			, T_USER.CREATE_USER_IDX
 			, T_USER.UPDATE_USER_IDX
 			, T_USER.DELETE_USER_IDX
-			, T_USER.UPDATE_DATETIME
-			, T_USER.CREATE_DATETIME
-			, T_USER.DELETE_DATETIME
+			, T_USER.UPDATE_DATE_TIME
+			, T_USER.CREATE_DATE_TIME
+			, T_USER.DELETE_DATE_TIME
 			, T_USER_CREATE.USER_NAME AS CREATE_USER_NAME
 			, T_USER_UPDATE.USER_NAME AS UPDATE_USER_NAME
 			, T_USER_DELETE.USER_NAME AS DELETE_USER_NAME
-			, T_COLLEGE.COLLEGE_NAME
 			, T_DEPARTMENT.DEPARTMENT_NAME
 		FROM TB_USER AS T_USER
-		LEFT JOIN TB_COLLEGE AS T_COLLEGE ON T_COLLEGE.COLLEGE_IDX = T_USER.COLLEGE_IDX
 		LEFT JOIN TB_DEPARTMENT AS T_DEPARTMENT ON T_DEPARTMENT.DEPARTMENT_IDX = T_USER.DEPARTMENT_IDX
 		LEFT JOIN TB_USER AS T_USER_CREATE ON T_USER_CREATE.USER_IDX = T_USER.CREATE_USER_IDX
 		LEFT JOIN TB_USER AS T_USER_UPDATE ON T_USER_UPDATE.USER_IDX = T_USER.UPDATE_USER_IDX
 		LEFT JOIN TB_USER AS T_USER_DELETE ON T_USER_DELETE.USER_IDX = T_USER.DELETE_USER_IDX
 		WHERE 1=1
 		]]>
-		<if test="useYN != null">
-			AND T_USER.USE_YN = #{useYN}
-		</if>
 		<if test="deleteYN != null">
 			AND T_USER.DELETE_YN = #{deleteYN}
-		</if>
-		<if test="collegeIdx != null">
-			AND T_USER.COLLEGE_IDX = #{collegeIdx}
 		</if>
 		<if test="departmentIdx != null">
 			AND T_USER.DEPARTMENT_IDX = #{departmentIdx}

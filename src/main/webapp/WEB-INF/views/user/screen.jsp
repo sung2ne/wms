@@ -14,7 +14,7 @@
             사용자
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> 전자출결</a></li>
+            <li><a href="#"><i class="fa fa-dashboard"></i> WMS</a></li>
             <li><a href="#">기준정보</a></li>
             <li class="active">사용자</li>
         </ol>
@@ -23,287 +23,99 @@
     <!-- Main content -->
     <section class="content">
         <div class="row">
-
-            <div class="col-md-8">
-
-                <div class="nav-tabs-custom">
-                    <ul class="nav nav-tabs">
-                        <li class="active"><a href="#studentTab" data-toggle="tab">학생</a></li>
-                        <li><a href="#professorTab" data-toggle="tab">교수</a></li>
-                        <li><a href="#assistantTab" data-toggle="tab">조교</a></li>
-                        <li><a href="#adminTab" data-toggle="tab">관리자</a></li>
-                        <li class="pull-right">
-                            <button type="button" class="btn btn-success" id="btnShowCreate" style="margin-top:2px; margin-right:5px;">신규등록</button>
-                        </li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="studentTab">
-                            <table class="table table-bordered table-hover" id="studentTable">
-                                <thead>
-                                <tr>
-                                    <th>이름</th>
-                                    <th>아이디</th>
-                                    <th>연락처</th>
-                                    <th>이메일</th>
-                                    <th>대학/학부</th>
-                                    <th>부서/학과</th>
-                                    <th>사용</th>
-                                    <th>삭제</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="tab-pane" id="professorTab">
-                            <table class="table table-bordered table-hover" id="professorTable">
-                                <thead>
-                                <tr>
-                                    <th>이름</th>
-                                    <th>아이디</th>
-                                    <th>연락처</th>
-                                    <th>이메일</th>
-                                    <th>대학/학부</th>
-                                    <th>부서/학과</th>
-                                    <th>사용</th>
-                                    <th>삭제</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="tab-pane" id="assistantTab">
-                            <table class="table table-bordered table-hover" id="assistantTable">
-                                <thead>
-                                <tr>
-                                    <th>이름</th>
-                                    <th>아이디</th>
-                                    <th>연락처</th>
-                                    <th>이메일</th>
-                                    <th>대학/학부</th>
-                                    <th>부서/학과</th>
-                                    <th>사용</th>
-                                    <th>삭제</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="tab-pane" id="adminTab">
-                            <table class="table table-bordered table-hover" id="adminTable">
-                                <thead>
-                                <tr>
-                                    <th>이름</th>
-                                    <th>아이디</th>
-                                    <th>연락처</th>
-                                    <th>이메일</th>
-                                    <th>대학/학부</th>
-                                    <th>부서/학과</th>
-                                    <th>사용</th>
-                                    <th>삭제</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="col-md-4">
-
-                <!-- 보기 -->
-                <div class="box hidden" id="viewBox">
+        
+        	<!-- 왼쪽 -->
+            <div class="col-md-8">            
+	            <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title">사용자 정보</h3>
+                        <h3 class="box-title">사용자 목록</h3>
+                        <div class="box-tools"><button type="button" class="btn btn-success" id="btnShowCreate">신규등록</button></div>
                     </div>
                     <div class="box-body">
+                        <table class="table table-bordered table-hover" id="studentTable">
+                        	<thead>
+                            <tr>
+                                <th>이름</th>
+                                <th>아이디</th>
+                                <th>부서</th>
+                                <th>핸드폰번호</th>
+                                <th>전화번호</th>    
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+			<!--// 왼쪽 -->
+			
+			<!-- 오른쪽 -->
+            <div class="col-md-4">    
+            	<form id="form">        
+	            	<div class="box-header">
+	                    <h3 class="box-title">사용자 정보</h3>
+	                </div>
+	                <div class="box-body">	                    
                         <table class="table table-bordered table-hover">
                             <colgroup>
                                 <col width="120">
                                 <col>
                             </colgroup>
                             <tr>
-                                <th>대학/학부</th>
-                                <td><span id="collegeName"></span></td>
-                            </tr>
-                            <tr>
                                 <th>학과/부서</th>
-                                <td><span id="departmentName"></span></td>
+                                <td>
+                                    <select class="form-control" name="departmentIdx">
+                                        <option value="">선택</option>
+                                        <option value="">선택</option>
+                                            <c:forEach var="departmentList" items="${departmentList}">
+                                                <option value="${departmentList.departmentIdx}">${departmentList.departmentName}</option>
+                                            </c:forEach>
+                                    </select>
+                                </td>
                             </tr>
                             <tr>
                                 <th>이름</th>
-                                <td><span id="userName"></span></td>
+                                <td><input type="text" class="form-control" name="userName"></td>
                             </tr>
                             <tr>
                                 <th>아이디</th>
-                                <td><span id="userId"></span></td>
+                                <td><input type="text" class="form-control" name="userId"></td>
+                            </tr>
+                            <tr>
+                                <th>비밀번호</th>
+                                <td><input type="password" class="form-control" name="password"></td>
+                            </tr>
+                            <tr>
+                                <th>비밀번호 확인</th>
+                                <td><input type="password" class="form-control" name="passwordConfirm"></td>
                             </tr>
                             <tr>
                                 <th>전화번호</th>
-                                <td><span id="userPhone"></span>
+                                <td><input type="text" class="form-control" name="phone"></td>
+                            </tr>
+                            <tr>
+                                <th>핸드폰번호</th>
+                                <td><input type="text" class="form-control" name="mobile"></td>
                             </tr>
                             <tr>
                                 <th>이메일</th>
-                                <td><span id="email"></span>
+                                <td><input type="text" class="form-control" name="email"></td>
                             </tr>
                             <tr>
                                 <th>구분</th>
-                                <td><span id="grade"></span>
+                                <td>
+                                    <select class="form-control" name="grade">
+                                        <option value="">선택</option>
+                                        <option value="CU">업체사용자</option>
+                                        <option value="CA">업체관리자</option>
+                                        <option value="A">관리자</option>
+                                    </select>
+                                </td>
                             </tr>
                         </table>
-                        <table class="table table-bordered table-hover" style="margin-top: 10px;">
-                            <colgroup>
-                                <col width="120">
-                                <col>
-                            </colgroup>
-                            <tr>
-                                <th>등록</th>
-                                <td><span id="createUserName"></span>
-                            </tr>
-                            <tr>
-                                <th>등록 일시</th>
-                                <td><span id="createDateTime"></span>
-                            </tr>
-                        </table>
-                        <table class="table table-bordered table-hover hidden" id="updateDateTimeTable" style="margin-top: 10px;">
-                            <colgroup>
-                                <col width="120">
-                                <col>
-                            </colgroup>
-                            <tr>
-                                <th>수정</th>
-                                <td><span id="updateUserName"></span>
-                            </tr>
-                            <tr>
-                                <th>수정 일시</th>
-                                <td><span id="updateDateTime"></span>
-                            </tr>
-                        </table>
-                        <table class="table table-bordered table-hover hidden" id="deleteDateTimeTable" style="margin-top: 10px;">
-                            <colgroup>
-                                <col width="120">
-                                <col>
-                            </colgroup>
-                            <tr>
-                                <th>삭제</th>
-                                <td><span id="deleteUserName"></span>
-                            </tr>
-                            <tr>
-                                <th>삭제 일시</th>
-                                <td><span id="deleteDateTime"></span>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="box-footer">
-                        <button type="button" class="btn btn-warning" id="btnShowEdit">정보 수정</button>
-                        <button type="button" class="btn btn-warning" id="btnShowPassword">비밀번호 수정</button>
-                        <div class="pull-right">
-                            <button type="button" class="btn btn-danger" id="btnDelete" data-toggle="modal" data-target="#deleteModal">삭제</button>
-                        </div>
-                    </div>
-                </div>
-                <!--// 보기 -->
-
-                <!-- 등록, 수정 -->
-                <div class="box" id="formBox">
-                    <div class="box-header">
-                        <h3 class="box-title">사용자 <span id="formText">등록</span></h3>
-                    </div>
-                    <div class="box-body">
-                        <form id="form">
-                            <table class="table table-bordered table-hover">
-                                <colgroup>
-                                    <col width="120">
-                                    <col>
-                                </colgroup>
-                                <tr class="editTr">
-                                    <th>대학/학부</th>
-                                    <td>
-                                        <select class="form-control" name="collegeIdx">
-                                            <option value="">선택</option>
-                                            <c:forEach var="collegeList" items="${collegeList}">
-                                                <option value="${collegeList.collegeIdx}">${collegeList.collegeName}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr class="editTr">
-                                    <th>학과/부서</th>
-                                    <td>
-                                        <select class="form-control" name="departmentIdx">
-                                            <option value="">선택</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr class="editTr">
-                                    <th>이름</th>
-                                    <td><input type="text" class="form-control" name="userName"></td>
-                                </tr>
-                                <tr class="editTr">
-                                    <th>아이디</th>
-                                    <td><input type="text" class="form-control" name="userId"></td>
-                                </tr>
-                                <tr class="passwordTr">
-                                    <th>비밀번호</th>
-                                    <td><input type="password" class="form-control" name="password"></td>
-                                </tr>
-                                <tr class="passwordTr">
-                                    <th>비밀번호 확인</th>
-                                    <td><input type="password" class="form-control" name="passwordConfirm"></td>
-                                </tr>
-                                <tr class="editTr">
-                                    <th>전화번호</th>
-                                    <td><input type="text" class="form-control" name="userPhone"></td>
-                                </tr>
-                                <tr class="editTr">
-                                    <th>이메일</th>
-                                    <td><input type="text" class="form-control" name="email"></td>
-                                </tr>
-                                <tr class="editTr">
-                                    <th>구분</th>
-                                    <td>
-                                        <select class="form-control" name="grade">
-                                            <option value="">선택</option>
-                                            <option value="P">교수</option>
-                                            <option value="S">학생</option>
-                                            <option value="H">조교</option>
-                                            <option value="A">관리자</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                            </table>
-                            <table class="table table-bordered table-hover hidden" id="useDelete" style="margin-top: 10px;">
-                                <colgroup>
-                                    <col width="120">
-                                    <col>
-                                </colgroup>
-                                <tr>
-                                    <th>사용</th>
-                                    <td>
-                                        <select class="form-control" name="useYN">
-                                            <option value="Y">사용</option>
-                                            <option value="N">사용안함</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>삭제</th>
-                                    <td>
-                                        <select class="form-control" name="deleteYN">
-                                            <option value="Y">삭제</option>
-                                            <option value="N">삭제안함</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                            </table>
-                        </form>
-                    </div>
-                    <div class="box-footer">
+					</div>
+					<div class="box-footer">
                         <button type="button" class="btn btn-primary" id="btnAddConfirm">등록</button>
                         <button class="btn btn-primary hidden" id="btnAddConfirmLoading" type="button" disabled>
                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> 처리중
@@ -320,10 +132,9 @@
                             <button type="button" class="btn btn-default" id="btnCancel">취소</button>
                         </div>
                     </div>
-                </div>
-                <!--// 등록, 수정 -->
-
+				</form>
             </div>
+            <!--// 오른쪽 -->
 
         </div>
     </section>
