@@ -9,12 +9,12 @@
 		<result property="departmentName"	 	column="DEPARTMENT_NAME" />			<!-- 부서 이름 -->
 		<!-- 등록, 수정, 삭제 -->
 		<result property="deleteYN" 			column="DELETE_YN" />				<!-- 삭제여부, Y:삭제, N:삭제안함 -->
-		<result property="createUserIdx" 		column="CREATE_DEPARTMENT_IDX" />	<!-- 생생한 사용자 IDX -->
-		<result property="updateUserIdx" 		column="UPDATE_DEPARTMENT_IDX" />	<!-- 수정한 사용자 IDX -->
-		<result property="deleteUserIdx" 		column="DELETE_DEPARTMENT_IDX" />	<!-- 삭제한 사용자 IDX -->
-		<result property="createUserName" 		column="CREATE_DEPARTMENT_NAME" />	<!-- 생생한 사용자 이름 -->
-		<result property="updateUserName" 		column="UPDATE_DEPARTMENT_NAME" />	<!-- 수정한 사용자 이름 -->
-		<result property="deleteUserName" 		column="DELETE_DEPARTMENT_NAME" />	<!-- 삭제한 사용자 이름 -->
+		<result property="createUserIdx" 		column="CREATE_USER_IDX" />	<!-- 생생한 사용자 IDX -->
+		<result property="updateUserIdx" 		column="UPDATE_USER_IDX" />	<!-- 수정한 사용자 IDX -->
+		<result property="deleteUserIdx" 		column="DELETE_USER_IDX" />	<!-- 삭제한 사용자 IDX -->
+		<result property="createUserName" 		column="CREATE_USER_NAME" />	<!-- 생생한 사용자 이름 -->
+		<result property="updateUserName" 		column="UPDATE_USER_NAME" />	<!-- 수정한 사용자 이름 -->
+		<result property="deleteUserName" 		column="DELETE_USER_NAME" />	<!-- 삭제한 사용자 이름 -->
 		<result property="createDateTime"	 	column="CREATE_DATE_TIME" />		<!-- 생성한 일시 -->
 		<result property="updateDateTime"	 	column="UPDATE_DATE_TIME" />		<!-- 수정한 일시 -->
 		<result property="deleteDateTime"	 	column="DELETE_DATE_TIME" />		<!-- 삭제한 일시 -->
@@ -26,7 +26,7 @@
 		INSERT INTO TB_DEPARTMENT (
 			DEPARTMENT_IDX
 			, DEPARTMENT_NAME
-			, DELETE_YN, CREATE_DEPARTMENT_IDX, CREATE_DATE_TIME
+			, DELETE_YN, CREATE_USER_IDX, CREATE_DATE_TIME
 		) VALUES (
 			, #{departmentIdx}
 			, #{departmentName}
@@ -42,9 +42,9 @@
 		 	T_DEPARTMENT.DEPARTMENT_IDX
 			, T_DEPARTMENT.DEPARTMENT_NAME
 			, T_DEPARTMENT.DELETE_YN
-			, T_DEPARTMENT.CREATE_DEPARTMENT_IDX
-			, T_DEPARTMENT.UPDATE_DEPARTMENT_IDX
-			, T_DEPARTMENT.DELETE_DEPARTMENT_IDX
+			, T_DEPARTMENT.CREATE_USER_IDX
+			, T_DEPARTMENT.UPDATE_USER_IDX
+			, T_DEPARTMENT.DELETE_USER_IDX
 			, T_DEPARTMENT.UPDATE_DATE_TIME
 			, T_DEPARTMENT.CREATE_DATE_TIME
 			, T_DEPARTMENT.DELETE_DATE_TIME
@@ -75,14 +75,14 @@
 			, DEPARTMENT_NAME = #{departmentName}
 		</if>
 		<if test="updateUserIdx != null">
-			, UPDATE_DEPARTMENT_IDX = #{updateUserIdx}, UPDATE_DATE_TIME = #{updateDateTime}
+			, UPDATE_USER_IDX = #{updateUserIdx}, UPDATE_DATE_TIME = #{updateDateTime}
 		</if>
 		<choose>
 			<when test="deleteYN != null and deleteYN == 'Y'.toString()">
-				, DELETE_YN = #{deleteYN}, DELETE_DEPARTMENT_IDX = #{deleteUserIdx}, DELETE_DATE_TIME = #{deleteDateTime}
+				, DELETE_YN = #{deleteYN}, DELETE_USER_IDX = #{deleteUserIdx}, DELETE_DATE_TIME = #{deleteDateTime}
 			</when>
 			<when test="deleteYN != null and deleteYN == 'N'.toString()">
-				, DELETE_YN = #{deleteYN}, DELETE_DEPARTMENT_IDX = "", DELETE_DATE_TIME = ""
+				, DELETE_YN = #{deleteYN}, DELETE_USER_IDX = "", DELETE_DATE_TIME = ""
 			</when>
 		</choose>
 		WHERE DEPARTMENT_IDX = #{departmentIdx}
@@ -95,9 +95,9 @@
 		 	T_DEPARTMENT.DEPARTMENT_IDX
 			, T_DEPARTMENT.DEPARTMENT_NAME
 			, T_DEPARTMENT.DELETE_YN
-			, T_DEPARTMENT.CREATE_DEPARTMENT_IDX
-			, T_DEPARTMENT.UPDATE_DEPARTMENT_IDX
-			, T_DEPARTMENT.DELETE_DEPARTMENT_IDX
+			, T_DEPARTMENT.CREATE_USER_IDX
+			, T_DEPARTMENT.UPDATE_USER_IDX
+			, T_DEPARTMENT.DELETE_USER_IDX
 			, T_DEPARTMENT.UPDATE_DATE_TIME
 			, T_DEPARTMENT.CREATE_DATE_TIME
 			, T_DEPARTMENT.DELETE_DATE_TIME

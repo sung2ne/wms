@@ -29,8 +29,8 @@ public class JwtManager {
                         .setIssuedAt(now)
                         .setNotBefore(now)
                         .setExpiration(exp)
-                        .claim("employeeNumber", userVo.getEmployeeNumber())
-                        .claim("name", userVo.getName())
+                        .claim("userId", userVo.getUserId())
+                        .claim("userName", userVo.getUserName())
                         //.signWith(SignatureAlgorithm.HS256,base64SecretBytes.getBytes()) //실운영시에는 주석풀것
                         .signWith(SignatureAlgorithm.HS256, "65c82833-11b7-4005-8b3a-6f341b92e39e".getBytes()) // 개발시에만사용할것
                         .compact();

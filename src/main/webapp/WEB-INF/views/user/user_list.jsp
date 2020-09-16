@@ -5,8 +5,8 @@
 <% pageContext.setAttribute("newLineChar", "\n"); %>
 
 <script>
-    // 조교
-    let assistantTable = $('#assistantTable').DataTable({
+    // 사용자 목록
+    let userTable = $('#userTable').DataTable({
         language: lang_kor,
         paging: true,
         pageLength: 20,
@@ -18,34 +18,15 @@
             url: '<c:url value="/user/list"/>',
             type: 'GET',
             data: function ( d ) {
-                d.grade = 'H';
+                //d.grade = 'A';
             }
         },
         columns: [
             { data: 'userName' },
             { data: 'userId' },
-            { data: 'userPhone' },
-            { data: 'email' },
-            { data: 'collegeName' },
             { data: 'departmentName' },
-            {
-                render: function(data, type, row) {
-                    if (row['useYN'] == 'Y') {
-                        return '사용';
-                    } else {
-                        return '<span class="text-danger">사용안함</span>';
-                    }
-                }
-            },
-            {
-                render: function(data, type, row) {
-                    if (row['deleteYN'] == 'Y') {
-                        return '<span class="text-danger">삭제</span>';
-                    } else {
-                        return '삭제안함';
-                    }
-                }
-            },
+            { data: 'mobile' },
+            { data: 'phone' },
         ],
         columnDefs: [
             {
@@ -57,8 +38,7 @@
         order: [
             [ 0, 'asc' ],
             [ 1, 'asc' ],
-            [ 3, 'asc' ],
-            [ 4, 'asc' ],
+            [ 2, 'asc' ],
         ],
         createdRow: function ( row, data, dataIndex, cells ) {
             $(row).attr('data-user-idx', data.userIdx);
@@ -66,7 +46,7 @@
     });
 
     // 조교 보기
-    $('#assistantTable tbody').on('click', 'tr', function () {
+    $('#userTable tbody').on('click', 'tr', function () {
         sideWork = 'view';
         userIdx = $(this).data('user-idx');
 

@@ -1,7 +1,12 @@
 package wms.web;
 
-import wms.domain.UserVo;
-import wms.service.user.UserService;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+
 import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,11 +16,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import wms.domain.DepartmentVo;
+import wms.domain.UserVo;
+import wms.service.department.DepartmentService;
+import wms.service.user.UserService;
 
 @Controller
 @RequestMapping("/user")
@@ -24,11 +28,18 @@ public class UserController {
 	@Inject
 	private UserService userService;
 
+	@Inject
+	private DepartmentService departmentService;
+	
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	// screen
 	@RequestMapping(value = {"","/"}, method = RequestMethod.GET)
 	public ModelAndView screenGET(ModelAndView mav) throws Exception {
+		// 부서 목록
+		DepartmentVo departmentVo = new DepartmentVo();
+		mav.addObject("departmentList", departmentService.all(departmentVo));
+		
 		mav.setViewName("user/screen");
 		return mav;
 	}
